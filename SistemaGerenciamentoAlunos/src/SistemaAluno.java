@@ -16,23 +16,29 @@ public class SistemaAluno {
 
       System.out.println("Escolha uma das opções do menu acima");
       opcao = scanner.nextInt();
+      scanner.nextLine();
 
       switch (opcao) {
         case 1: {
+          cadastrarAluno(scanner, listaAlunos);
           break;
         }
         case 2: {
+          listarAlunos(listaAlunos);
           break;
         }
         case 3: {
+          buscarAluno(scanner, listaAlunos);
           break;
         }
         case 4: {
+
+          System.out.println("Encerrando Operação ...");
           break;
         }
 
         default:
-
+          System.out.println("Erro: Escolha uma opção valida!");
           break;
       }
 
@@ -40,6 +46,126 @@ public class SistemaAluno {
 
     scanner.close();
 
+  }
+
+  /**
+   * 
+   * @param scanner
+   * @param listaAlunos
+   * @return Aluno Cadastrado(criado)
+   */
+  public static Aluno cadastrarAluno(Scanner scanner, ArrayList<Aluno> listaAlunos) {
+    // criando nome
+    String nome = "";
+    do {
+      System.out.println("Digite o nome do aluno:");
+      nome = scanner.nextLine();
+      if (nome.trim().isEmpty()) {
+        System.out.println("Preencha o campo vazio!");
+      }
+    } while (nome.trim().isEmpty());
+
+    // crianso matricula
+    String matricula = "";
+    matricula = gerarMatricula();
+    System.out.println("Matricula gerada com sucesso!");
+
+    // criando notas
+    System.out.println("Digite a quantidade de notas a serem registradas:");
+    int quantidade = scanner.nextInt();
+    scanner.nextLine();
+    double[] notas = new double[quantidade];
+
+    for (int i = 0; i < quantidade; i++) {
+      System.out.println("Digite a nota " + (i + 1) + ":");
+      notas[i] = scanner.nextDouble();
+    }
+
+    // criando aluno e adicionando a lista
+
+    System.out.println("Aluno cadastrado com sucesso!");
+    Aluno novoAluno = new Aluno(nome, matricula, notas);
+
+    System.out.println("Adicionando à lista!");
+    listaAlunos.add(novoAluno);
+
+    return novoAluno;
+  }
+
+  public static String gerarMatricula() {
+    Random random = new Random();
+    StringBuilder matricula = new StringBuilder();
+
+    for (int i = 0; i < 8; i++) {
+      int digito = random.nextInt(10); // numerod de 0 a 9
+      matricula.append(digito);
+    }
+
+    return matricula.toString();
+  }
+
+  /**
+   * 
+   * @param listaAlunos
+   *                    Mostra Alunos existentes na lista
+   */
+
+  public static void listarAlunos(ArrayList<Aluno> listaAlunos) {
+
+    if (listaAlunos.isEmpty()) {
+      System.out.println("Nenhum aluno cadastrado.");
+    } else {
+      for (Aluno aluno : listaAlunos) {
+        System.out.println(aluno);
+      }
+    }
+  }
+
+  /**
+   * 
+   * @param scanner
+   * @param listaAlunos
+   * 
+   *                    Busca pela matrícula, alunos exstentes na lista.
+   */
+  public static void buscarAluno(Scanner scanner, ArrayList<Aluno> listaAlunos) {
+    boolean matriculaValida;
+    String matriculaDigitada = "";
+
+    do {
+      try {
+        System.out.println("Digite a matrícula do aluno: ");
+        matriculaDigitada = scanner.nextLine();
+        verificarMatricula(matriculaDigitada, listaAlunos);
+        matriculaValida = true;
+
+      } catch (MatriculaInvalidaException e) {
+        System.out.println(e.getMessage());
+        matriculaValida = false;
+
+      } catch (InputMismatchException e) {
+        System.out.println("Erro: Digite um numero inteiro, sem (,) ");
+        scanner.nextLine();
+        matriculaValida = false;
+      }
+
+    } while (!matriculaValida);
+
+  }
+
+  static void verificarMatricula(String matriculaDigitada, ArrayList<Aluno> listaAlunos)
+      throws MatriculaInvalidaException {
+    for (Aluno aluno : listaAlunos) {
+      if (matriculaDigitada.equals(aluno.getMatricula())) {
+        System.out.println(aluno);
+      } else {
+        System.out.println("Aluno não encontrado");
+      }
+    }
+
+    if (matriculaDigitada.length() > 8 && matriculaDigitada.length() < 8) {
+      throw new MatriculaInvalidaException("Erro: Matrícula contem 8 caracteres.");
+    }
   }
 
 }

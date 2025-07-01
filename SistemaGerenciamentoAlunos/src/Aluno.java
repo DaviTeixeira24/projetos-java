@@ -14,6 +14,10 @@ public class Aluno {
     this.notas = notas;
   }
 
+  public String getMatricula() {
+    return this.matricula;
+  }
+
   // Usar o Static apenas quando precisar criar variaveis "locais" no metodo
   // (aqui estamos usando atributos do objeto)
   public double calcularMedia() {
@@ -43,10 +47,10 @@ public class Aluno {
   public String toString() {
     return "Aluno" +
         " [nome: " + this.nome +
-        " Matricula: " + this.matricula +
-        " Notas: " + Arrays.toString(this.notas) +
-        " Media: " + String.format("%.2f", this.calcularMedia()) +
-        " Situação: " + this.situacaoAluno() + "]";
+        ", Matricula: " + this.matricula +
+        ", Notas: " + Arrays.toString(this.notas) +
+        ", Media: " + String.format("%.2f", this.calcularMedia()) +
+        ", Situação: " + this.situacaoAluno() + "]";
   }
 
 }
