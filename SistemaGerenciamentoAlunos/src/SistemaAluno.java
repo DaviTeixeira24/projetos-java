@@ -167,7 +167,7 @@ public class SistemaAluno {
       if (matriculaDigitada.equals(aluno.getMatricula())) {
         System.out.println(aluno);
       } else {
-        System.out.println("Aluno não encontrado");
+        System.out.println("Matrícula Invalida!");
       }
     }
 
