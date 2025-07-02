@@ -82,7 +82,6 @@ public class SistemaAluno {
     }
 
     // criando aluno e adicionando a lista
-
     System.out.println("Aluno cadastrado com sucesso!");
     Aluno novoAluno = new Aluno(nome, matricula, notas);
 
@@ -92,6 +91,10 @@ public class SistemaAluno {
     return novoAluno;
   }
 
+  /**
+   * 
+   * @return Gera uma matrícula(ID) para os alunos
+   */
   public static String gerarMatricula() {
     Random random = new Random();
     StringBuilder matricula = new StringBuilder();
@@ -107,9 +110,9 @@ public class SistemaAluno {
   /**
    * 
    * @param listaAlunos
-   *                    Mostra Alunos existentes na lista
+   * 
+   * @void Mostra Alunos existentes na lista
    */
-
   public static void listarAlunos(ArrayList<Aluno> listaAlunos) {
 
     if (listaAlunos.isEmpty()) {
@@ -126,22 +129,17 @@ public class SistemaAluno {
    * @param scanner
    * @param listaAlunos
    * 
-   *                    Busca pela matrícula, alunos exstentes na lista.
+   * @void Buscar alunos existentes na lista pela matrícula.
    */
   public static void buscarAluno(Scanner scanner, ArrayList<Aluno> listaAlunos) {
     boolean matriculaValida;
     String matriculaDigitada = "";
-
     do {
       try {
         System.out.println("Digite a matrícula do aluno: ");
         matriculaDigitada = scanner.nextLine();
         verificarMatricula(matriculaDigitada, listaAlunos);
         matriculaValida = true;
-
-      } catch (MatriculaInvalidaException e) {
-        System.out.println(e.getMessage());
-        matriculaValida = false;
 
       } catch (InputMismatchException e) {
         System.out.println("Erro: Digite um numero inteiro, sem (,) ");
@@ -153,8 +151,8 @@ public class SistemaAluno {
 
   }
 
-  static void verificarMatricula(String matriculaDigitada, ArrayList<Aluno> listaAlunos)
-      throws MatriculaInvalidaException {
+  static void verificarMatricula(String matriculaDigitada, ArrayList<Aluno> listaAlunos) {
+
     for (Aluno aluno : listaAlunos) {
       if (matriculaDigitada.equals(aluno.getMatricula())) {
         System.out.println(aluno);
@@ -163,9 +161,6 @@ public class SistemaAluno {
       }
     }
 
-    if (matriculaDigitada.length() > 8 && matriculaDigitada.length() < 8) {
-      throw new MatriculaInvalidaException("Erro: Matrícula contem 8 caracteres.");
-    }
   }
 
 }
