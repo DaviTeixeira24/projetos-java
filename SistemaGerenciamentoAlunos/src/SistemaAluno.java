@@ -134,23 +134,33 @@ public class SistemaAluno {
   public static void buscarAluno(Scanner scanner, ArrayList<Aluno> listaAlunos) {
     boolean matriculaValida;
     String matriculaDigitada = "";
-    do {
-      try {
-        System.out.println("Digite a matrícula do aluno: ");
-        matriculaDigitada = scanner.nextLine();
-        verificarMatricula(matriculaDigitada, listaAlunos);
-        matriculaValida = true;
+    if (listaAlunos.isEmpty()) {
+      System.out.println("Nenhum aluno Registrado!");
+    } else {
+      do {
+        try {
+          System.out.println("Digite a matrícula do aluno: ");
+          matriculaDigitada = scanner.nextLine();
+          verificarMatricula(matriculaDigitada, listaAlunos);
+          matriculaValida = true;
 
-      } catch (InputMismatchException e) {
-        System.out.println("Erro: Digite um numero inteiro, sem (,) ");
-        scanner.nextLine();
-        matriculaValida = false;
-      }
+        } catch (InputMismatchException e) {
+          System.out.println("Erro: Digite um numero inteiro, sem (,) ");
+          scanner.nextLine();
+          matriculaValida = false;
+        }
 
-    } while (!matriculaValida);
+      } while (!matriculaValida);
+    }
 
   }
 
+  /**
+   * @param matriculaDigitada
+   * @param listaAlunos
+   * 
+   * @void Metodo auxiliar para buscarAluno()
+   */
   static void verificarMatricula(String matriculaDigitada, ArrayList<Aluno> listaAlunos) {
 
     for (Aluno aluno : listaAlunos) {
