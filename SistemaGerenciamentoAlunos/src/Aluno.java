@@ -45,12 +45,12 @@ public class Aluno {
 
   @Override
   public String toString() {
-    return "Aluno" +
-        " [nome: " + this.nome +
-        ", Matricula: " + this.matricula +
-        ", Notas: " + Arrays.toString(this.notas) +
-        ", Media: " + String.format("%.2f", this.calcularMedia()) +
-        ", Situação: " + this.situacaoAluno() + "]";
+    return "\n[Aluno]" +
+        "\nNome: " + this.nome +
+        "\nMatrícula: " + this.matricula +
+        "\nNotas: " + Arrays.toString(this.notas) +
+        "\nMédia: " + String.format("%.2f", this.calcularMedia()) +
+        "\nSituação: " + this.situacaoAluno() + "\n";
   }
 
 }

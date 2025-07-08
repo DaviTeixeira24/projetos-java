@@ -50,9 +50,9 @@ public class SistemaAluno {
 
   /**
    * 
-   * @param scanner
-   * @param listaAlunos
-   * @return Aluno Cadastrado(criado)
+   * @param scanner     Scanner para entrada de dados
+   * @param listaAlunos Lista onde o aluno será adicionado
+   * @return O aluno criado
    */
   public static Aluno cadastrarAluno(Scanner scanner, ArrayList<Aluno> listaAlunos) {
     // criando nome
@@ -65,20 +65,49 @@ public class SistemaAluno {
       }
     } while (nome.trim().isEmpty());
 
-    // crianso matricula
+    // criando matricula
     String matricula = "";
     matricula = gerarMatricula();
     System.out.println("Matricula gerada com sucesso!");
 
     // criando notas
-    System.out.println("Digite a quantidade de notas a serem registradas:");
-    int quantidade = scanner.nextInt();
-    scanner.nextLine();
-    double[] notas = new double[quantidade];
+    boolean entradaValida;
+    int quantidade = 0;
+    // verificando quantidade de notas
+    do {
+      try {
+        System.out.println("Digite a quantidade de notas a serem registradas:");
+        quantidade = scanner.nextInt();
+        scanner.nextLine();
+        entradaValida = true;
+      } catch (InputMismatchException e) {
+        System.out.println("Erro: Não digite (,) ou (.) os numeros são inteiros!");
+        scanner.nextLine();
+        entradaValida = false;
+      }
+    } while (!entradaValida);
 
+    // verificando as notas
+    double[] notas = new double[quantidade];
     for (int i = 0; i < quantidade; i++) {
-      System.out.println("Digite a nota " + (i + 1) + ":");
-      notas[i] = scanner.nextDouble();
+      do {
+        System.out.println("Digite a nota " + (i + 1) + ":");
+        entradaValida = true;
+        try {
+          notas[i] = scanner.nextDouble();
+          if (notas < 0 || notas > 10) {
+            System.out.println("Erro: A nota deve estar entre 0 e 10.");
+            entradaValida = false;
+            continue;
+          }
+          entradaValida = true;
+        } catch (InputMismatchException e) {
+          System.out.println("Erro: Não utilize (.), para pular de casa decimal utilize (,) ");
+          scanner.nextLine();
+          entradaValida = false;
+        }
+      } while (!entradaValida);
+
     }
 
     // criando aluno e adicionando a lista
@@ -93,7 +122,7 @@ public class SistemaAluno {
 
   /**
    * 
-   * @return Gera uma matrícula(ID) para os alunos
+   * @return Gera uma matrícula(ID) para cada aluno criado
    */
   public static String gerarMatricula() {
     Random random = new Random();
@@ -109,9 +138,8 @@ public class SistemaAluno {
 
   /**
    * 
-   * @param listaAlunos
+   * @param listaAlunos Lista onde os alunos estão adicionados
    * 
-   * @void Mostra Alunos existentes na lista
    */
   public static void listarAlunos(ArrayList<Aluno> listaAlunos) {
 
@@ -126,10 +154,10 @@ public class SistemaAluno {
 
   /**
    * 
-   * @param scanner
-   * @param listaAlunos
+   * @param scanner     Scanner para entrada de dados
+   * @param listaAlunos Lista onde os alunos estão adicionados
    * 
-   * @void Buscar alunos existentes na lista pela matrícula.
+   * 
    */
   public static void buscarAluno(Scanner scanner, ArrayList<Aluno> listaAlunos) {
     boolean matriculaValida;
@@ -138,39 +166,40 @@ public class SistemaAluno {
       System.out.println("Nenhum aluno Registrado!");
     } else {
       do {
-        try {
-          System.out.println("Digite a matrícula do aluno: ");
-          matriculaDigitada = scanner.nextLine();
-          verificarMatricula(matriculaDigitada, listaAlunos);
+        System.out.println("Digite a matrícula do aluno: ");
+        matriculaDigitada = scanner.nextLine();
+        if (matriculaDigitada.length() == 8) {
+          exbirAlunoPorMatricula(matriculaDigitada, listaAlunos);
           matriculaValida = true;
 
-        } catch (InputMismatchException e) {
-          System.out.println("Erro: Digite um numero inteiro, sem (,) ");
-          scanner.nextLine();
+        } else {
+          System.out.println("Erro: Digite um numero inteiro de 8 digitos");
           matriculaValida = false;
-        }
 
+        }
       } while (!matriculaValida);
     }
 
   }
 
   /**
-   * @param matriculaDigitada
-   * @param listaAlunos
+   * @param matriculaDigitada Matricula passada como dados no Scanner
+   * @param listaAlunos       Lista onde os alunos foram adicionados
    * 
-   * @void Metodo auxiliar para buscarAluno()
+   * 
    */
-  static void verificarMatricula(String matriculaDigitada, ArrayList<Aluno> listaAlunos) {
-
+  static void exbirAlunoPorMatricula(String matriculaDigitada, ArrayList<Aluno> listaAlunos) {
+    boolean alunoEncontrado = false;
     for (Aluno aluno : listaAlunos) {
       if (matriculaDigitada.equals(aluno.getMatricula())) {
         System.out.println(aluno);
-      } else {
-        System.out.println("Matrícula Invalida!");
+        alunoEncontrado = true;
+        break;
       }
+    }
+    if (!alunoEncontrado) {
+      System.out.println("Matricula nao encontrada!");
     }
 
   }
-
 }
